@@ -1,14 +1,22 @@
 while True:
-    word = input("Enter a word: \n")
+    word = input("Enter a word: ")
     if word.lower() == "quit":
         print("End program")
         break
-
-    if "ie" in word: # * Problem is needs to be "ie" not "ei"
-        if "cie" not in word:
-           print(f"Potential spelling error found in: {word}")  
-           # * I deleted the input for enter a word
-           # * You only need to use one input only because if it's not a spelling mistake
-           # * It will loop again until 
-           break
- 
+    
+    lower_word = word.lower()
+    error_found = False
+    
+    #* Check all letter sequences in the word
+    for i in range(len(lower_word)-1):
+        #* Case 1: 'ei' not preceded by 'c' -> ERROR
+        if lower_word[i:i+2] == "ei" and (i == 0 or lower_word[i-1] != "c"):
+            error_found = True
+            break
+        #* Case 2: 'ie' preceded by 'c' -> ERROR
+        elif lower_word[i:i+2] == "ie" and (i > 0 and lower_word[i-1] == "c"):
+            error_found = True
+            break
+    
+    if error_found:
+        print(f"Potential spelling error found in: {word}")    
